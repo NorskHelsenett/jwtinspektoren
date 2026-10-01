@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src https:; img-src 'self' data:">
+  <meta name="referrer" content="no-referrer">
+  <title>JWT-dekoder</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main>
+    <h1>JWT-dekoder</h1>
+    <p class="note">Dekodingen skjer kun i nettleseren din. Tokenet sendes aldri noe sted; bare utstederens offentlige nøkler hentes når du ber om det.</p>
+
+    <label for="token">Token</label>
+    <textarea id="token" rows="6" spellcheck="false" autocomplete="off" placeholder="Lim inn en JWT her (eyJ...)"></textarea>
+
+    <p id="error" class="error" hidden></p>
+
+    <section id="output" hidden>
+      <div class="col">
+        <h2>Header</h2>
+        <pre id="header"></pre>
+
+        <h2>Payload</h2>
+        <pre id="payload"></pre>
+      </div>
+
+      <div class="col">
+        <div id="claims-wrap" hidden>
+          <h2>Tidspunkter</h2>
+          <table id="claims"></table>
+        </div>
+
+        <h2>Signatur</h2>
+        <pre id="signature"></pre>
+
+        <h2>Verifiser signatur</h2>
+        <button id="verify-issuer" type="button">Hent offentlig nøkkel fra utsteder (iss)</button>
+        <label for="key" class="key-label">Nøkkel (hentet fra utsteder, eller lim inn JWK, JWKS, offentlig PEM-nøkkel eller HMAC-hemmelighet)</label>
+        <textarea id="key" rows="5" spellcheck="false" autocomplete="off"></textarea>
+        <div id="verify-result" role="status" hidden>
+          <span id="verify-icon" aria-hidden="true"></span>
+          <div>
+            <div id="verify-title"></div>
+            <div id="verify-detail"></div>
+            <div id="verify-link" hidden>
+              <span id="verify-link-hint"></span>
+              <a id="verify-link-a" target="_blank" rel="noopener noreferrer"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
