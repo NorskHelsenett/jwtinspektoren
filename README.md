@@ -33,17 +33,17 @@ Manuell løsning: åpne `jwks_uri` i en ny fane, kopier JSON-innholdet og lim de
 
 ## Kjøre lokalt
 
-Appen består av tre statiske filer: `index.html`, `app.js` og `styles.css`. Uten byggesteg:
+Appen består av tre statiske filer i [`app/`](app): `index.html`, `app.js` og `styles.css`. Uten byggesteg:
 
 ```bash
-npx serve -s .
+npx serve -s app
 ```
 
 `-s` gjør at ukjente stier serverer `index.html`, slik at `/<token>` fungerer.
 
 ## Installere i Kubernetes
 
-Helm-chartet i [`charts/jwtinspektoren`](charts/jwtinspektoren) kjører `nginxinc/nginx-unprivileged`. De tre filene legges i et ConfigMap, så det trengs ikke et eget image. Filene i `charts/jwtinspektoren/files/` er symlenker til filene i rotmappen.
+Helm-chartet i [`charts/jwtinspektoren`](charts/jwtinspektoren) kjører `nginxinc/nginx-unprivileged`. De tre filene legges i et ConfigMap, så det trengs ikke et eget image. Filene i `charts/jwtinspektoren/files/` er symlenker til filene i `app/`.
 
 ```bash
 helm upgrade --install jwtinspektoren charts/jwtinspektoren \
