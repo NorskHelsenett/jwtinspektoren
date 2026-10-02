@@ -36,6 +36,7 @@ h1 { margin-top: 0; }
 h2 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; color: var(--accent); }
 
 .note { opacity: 0.75; font-size: 0.9rem; }
+.note a { color: var(--accent); }
 
 label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
 
