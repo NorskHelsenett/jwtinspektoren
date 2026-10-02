@@ -231,8 +231,13 @@ function verifyWithIssuer() {
 function formatTime(seconds) {
   const d = new Date(seconds * 1000);
   const p = (n) => String(n).padStart(2, '0');
+  // Offset is per date, so DST is reflected correctly.
+  const offset = -d.getTimezoneOffset();
+  const sign = offset < 0 ? '-' : '+';
+  const abs = Math.abs(offset);
+  const zone = offset === 0 ? 'UTC' : `UTC${sign}${Math.floor(abs / 60)}${abs % 60 ? `:${p(abs % 60)}` : ''}`;
   return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())} ` +
-    `${p(d.getDate())}.${p(d.getMonth() + 1)}.${d.getFullYear()}`;
+    `${p(d.getDate())}.${p(d.getMonth() + 1)}.${d.getFullYear()} (${zone})`;
 }
 
 function renderClaims(payload) {

@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "jwtinspektoren.fullname" . }}-html
+  labels:
+    {{- include "jwtinspektoren.labels" . | nindent 4 }}
+data:
+  index.html: |-
+    {{- .Files.Get "files/index.html" | nindent 4 }}
+  app.js: |-
+    {{- .Files.Get "files/app.js" | nindent 4 }}
+  styles.css: |-
+    {{- .Files.Get "files/styles.css" | nindent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "jwtinspektoren.fullname" . }}-nginx
+  labels:
+    {{- include "jwtinspektoren.labels" . | nindent 4 }}
+data:
+  default.conf: |-
+    server {
+      listen 8080;
+      server_name _;
+      root /usr/share/nginx/html;
+      server_tokens off;
+
+      {{- if not .Values.accessLog }}
+      access_log off;
+      {{- end }}
+
+      add_header X-Content-Type-Options "nosniff" always;
+      add_header Referrer-Policy "no-referrer" always;
+      add_header X-Frame-Options "DENY" always;
+      add_header Cache-Control "no-cache" always;
+
+      location = /healthz {
+        access_log off;
+        default_type text/plain;
+        return 200 "ok";
+      }
+
+      # Unknown paths (e.g. /<token>) fall back to the app.
+      location / {
+        try_files $uri /index.html;
+      }
+    }
